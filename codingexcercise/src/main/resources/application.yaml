@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  
+  
+spring:
+    cassandra:
+      port: 9042
+      contact-points:
+      - 127.0.0.1
+      keyspace-name: my_project
+      local-datacenter: datacenter1
+        
