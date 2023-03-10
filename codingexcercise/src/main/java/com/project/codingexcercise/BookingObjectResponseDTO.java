@@ -1,6 +1,10 @@
 package com.project.codingexcercise;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+/**
+ * @author vijayasanthi
+ *
+ */
 
 public class BookingObjectResponseDTO {
 

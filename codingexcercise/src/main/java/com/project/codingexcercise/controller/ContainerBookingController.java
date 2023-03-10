@@ -1,6 +1,11 @@
+
+
 package com.project.codingexcercise.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
+
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.validation.annotation.Validated;
@@ -25,32 +30,43 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 
+/**
+ * @author vijayasanthi
+ *
+ */
 @RestController
 @Validated
 @RequestMapping("/api/bookings")
 public class ContainerBookingController {
 
-
+	 Logger logger = (Logger) LoggerFactory.getLogger(ContainerBookingController.class);
 
 	@Autowired
 	private BookingsRepository bookingRepository;
 	WebClient webClient = WebClient.create();
 
-	// @PostMapping("/checkAvailablity1")
+//This API to call external API and check for availability
 	 @PostMapping("/checkAvailablity")
+	 
 	    public Mono<Object> check(@Valid @RequestBody Bookings bookings) {
-		 
+		 String methodName="checkAvailablity";
+		logger.info("calling method "+methodName);
 		return callexternalAPI();
 		     
 	 }
 	 
 	
-	 Mono<Object>  callexternalAPI() {
-	HttpClient httpClient = HttpClient.create()
-		   
-		    .baseUrl("https://maersk.com/");
-
-		WebClient webClient = WebClient.builder()
+	 /**
+	  * @Object
+	 * @callexternalAPI
+	 */
+	Mono<Object>  callexternalAPI() {
+		
+		String methodName="callexternalAPI";
+		 logger.info("calling method "+methodName);
+		 
+		 HttpClient httpClient = HttpClient.create().baseUrl("https://maersk.com/");
+		 WebClient webClient = WebClient.builder()
 		    .clientConnector(new ReactorClientHttpConnector(httpClient))
 		    .baseUrl("https://maersk.com")
 		    .build();
@@ -77,18 +93,29 @@ public class ContainerBookingController {
 	 }
 
  
-	 @GetMapping("/all")
+	 /**
+	 * @GetMapping("/all")
+	 */
+	@GetMapping("/all")
 	  public Flux<Bookings> getAllbookingIds() {
 		return bookingRepository.findAll();
 	    
 	  }
+	
+	 /**
+	 * @PostMapping("/createBooking")
+	 */
 	    
 	//This call is to save booking detail and to return booking reference to customer	  
 	 
 	 @PostMapping("/createBooking")
 	    public Mono<Object> createUser(@Valid @RequestBody Bookings bookings) {
+		 
+		 String methodName="checkAvailablity";
+		logger.info("calling method "+methodName);
+		
 		 AtomicLong nextSerialNumber;
- 		  Long defaultRefNUmber=957000000L;
+ 		 Long defaultRefNUmber=957000000L;
  		  
  	    	 CqlSession session = CqlSession.builder().build();
  			 MaxValueFinder maxValueFinder = new MaxValueFinder(session);		 
@@ -106,6 +133,7 @@ public class ContainerBookingController {
  			return  bookingRepository.save(new Bookings(bookingrefid, bookings.getContainerSize(),bookings.getContainerType(),
      		bookings.getOrigin(),bookings.getDestination(),bookings.getQuantity(),bookings.getTimestamp())).
  					map(obj -> {
+ 				
      			BookingObjectResponseDTO dto = new BookingObjectResponseDTO();
      			dto.setBookingRef(obj.getId().toString());
      			

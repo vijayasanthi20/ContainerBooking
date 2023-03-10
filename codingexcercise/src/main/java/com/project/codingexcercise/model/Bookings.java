@@ -1,3 +1,4 @@
+
 package com.project.codingexcercise.model;
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
@@ -8,6 +9,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/**
+ * @author vijayasanthi
+ *
+ */
 @Table
 public class Bookings {
 

@@ -1,10 +1,12 @@
 package com.project.codingexcercise;
 import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.cql.ResultSet;
-import com.datastax.oss.driver.api.core.cql.Row;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author vijayasanthi
+ *
+ */
 public class MaxValueFinder {
     private final CqlSession session;
 
